@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delulu Agents - University Friend Group</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #ff6b8b;
+            --secondary: #6a5af9;
+            --accent: #4ecdc4;
+            --dark: #2d3047;
+            --light: #f8f9fa;
+            --text: #333;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="2" fill="white"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        }
+
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--dark);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            color: var(--dark);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: #e9ecef;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .photo-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .photo-img {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .photo-info {
+            padding: 1rem;
+        }
+
+        .photo-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .photo-date {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .event-date {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            padding: 1rem;
+            min-width: 100px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .event-day {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .event-month {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .event-details {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .event-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .event-description {
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .event-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .event-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .member-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .member-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .member-avatar {
+            height: 120px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .member-info {
+            padding: 1.5rem 1rem;
+        }
+
+        .member-name {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .member-role {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .member-bio {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .add-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .members-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .event-card {
+                flex-direction: column;
+            }
+            
+            .event-date {
+                flex-direction: row;
+                justify-content: center;
+                gap: 1rem;
+                min-width: auto;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-user-secret"></i>
+        </div>
+        <h1>Delulu Agents</h1>
+        <p class="tagline">University friends creating chaos and memories since 2024</p>
+    </header>
+
+    <div class="container">
+        <div class="nav-tabs">
+            <button class="tab-btn active" data-tab="gallery">Gallery</button>
+            <button class="tab-btn" data-tab="events">Next Outings</button>
+            <button class="tab-btn" data-tab="members">Agents</button>
+            <button class="tab-btn" data-tab="add">Add Content</button>
+        </div>
+
+        <div id="gallery" class="tab-content active">
+            <h2 class="section-title">Our Memories</h2>
+            <div class="gallery">
+                <div class="photo-card">
+                    <div class="photo-img">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="photo-info">
+                        <div class="photo-title">Graduation Day</div>
+                        <div class="photo-date">May 15, 2023</div>
+                    </div>
+                </div>
+                <div class="photo-card">
+                    <div class="photo-img">
+                        <i class="fas fa-umbrella-beach"></i>
+                    </div>
+                    <div class="photo-info">
+                        <div class="photo-title">Cox's Bazar Trip</div>
+                        <div class="photo-date">July 22, 2023</div>
+                    </div>
+                </div>
+                <div class="photo-card">
+                    <div class="photo-img">
+                        <i class="fas fa-birthday-cake"></i>
+                    </div>
+                    <div class="photo-info">
+                        <div class="photo-title">Iqra's Birthday</div>
+                        <div class="photo-date">September 5, 2023</div>
+                    </div>
+                </div>
+                <div class="photo-card">
+                    <div class="photo-img">
+                        <i class="fas fa-hiking"></i>
+                    </div>
+                    <div class="photo-info">
+                        <div class="photo-title">Bandarban Hike</div>
+                        <div class="photo-date">October 12, 2023</div>
+                    </div>
+                </div>
+                <div class="photo-card">
+                    <div class="photo-img">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="photo-info">
+                        <div class="photo-title">Concert Night</div>
+                        <div class="photo-date">November 18, 2023</div>
+                    </div>
+                </div>
+                <div class="photo-card">
+                    <div class="photo-img">
+                        <i class="fas fa-house-party"></i>
+                    </div>
+                    <div class="photo-info">
+                        <div class="photo-title">Ame's House Party</div>
+                        <div class="photo-date">December 30, 2023</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="events" class="tab-content">
+            <h2 class="section-title">Next Outings & Plans</h2>
+            <div class="events-list">
+                <div class="event-card">
+                    <div class="event-date">
+                        <div class="event-day">15</div>
+                        <div class="event-month">MAR</div>
+                    </div>
+                    <div class="event-details">
+                        <h3 class="event-title">Hangout at Kavan's Place</h3>
+                        <p class="event-description">Chill session at Kavan's place in Dhanmondi. Gaming, movies, and unlimited snacks!</p>
+                        <div class="event-meta">
+                            <div class="event-meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Dhanmondi, Dhaka</span>
+                            </div>
+                            <div class="event-meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>6:00 PM</span>
+                            </div>
+                            <div class="event-meta-item">
+                                <i class="fas fa-users"></i>
+                                <span>All Agents</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-date">
+                        <div class="event-day">22</div>
+                        <div class="event-month">MAR</div>
+                    </div>
+                    <div class="event-details">
+                        <h3 class="event-title">Sordar Bari Feast</h3>
+                        <p class="event-description">Traditional Bengali feast at Sordar Bari in Khilkhet. Biryani and kacchi night!</p>
+                        <div class="event-meta">
+                            <div class="event-meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Sordar Bari, Khilkhet</span>
+                            </div>
+                            <div class="event-meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>8:00 PM</span>
+                            </div>
+                            <div class="event-meta-item">
+                                <i class="fas fa-users"></i>
+                                <span>All food lovers</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-date">
+                        <div class="event-day">05</div>
+                        <div class="event-month">APR</div>
+                    </div>
+                    <div class="event-details">
+                        <h3 class="event-title">Fine Dining at Chef's Table</h3>
+                        <p class="event-description">Upscale dining experience at Chef's Table in Madani Avenue. Dress to impress!</p>
+                        <div class="event-meta">
+                            <div class="event-meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Chef's Table, Madani Avenue</span>
+                            </div>
+                            <div class="event-meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>7:30 PM</span>
+                            </div>
+                            <div class="event-meta-item">
+                                <i class="fas fa-users"></i>
+                                <span>All Agents</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-date">
+                        <div class="event-day">12</div>
+                        <div class="event-month">APR</div>
+                    </div>
+                    <div class="event-details">
+                        <h3 class="event-title">Momo Night at Momo Place</h3>
+                        <p class="event-description">Unlimited momos and chowmein at our favorite spot in Banani. Spicy challenge!</p>
+                        <div class="event-meta">
+                            <div class="event-meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Momo Place, Banani</span>
+                            </div>
+                            <div class="event-meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>6:30 PM</span>
+                            </div>
+                            <div class="event-meta-item">
+                                <i class="fas fa-users"></i>
+                                <span>Momo enthusiasts</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="members" class="tab-content">
+            <h2 class="section-title">Meet the Agents</h2>
+            <div class="members-grid">
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="member-info">
+                        <div class="member-name">Kaif</div>
+                        <div class="member-role">Plan Master</div>
+                        <p class="member-bio">Always has the craziest ideas and makes them happen.</p>
+                    </div>
+                </div>
+                
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="member-info">
+                        <div class="member-name">Ame</div>
+                        <div class="member-role">Food Expert</div>
+                        <p class="member-bio">Knows all the best places to eat in Dhaka.</p>
+                    </div>
+                </div>
+                
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <div class="member-info">
+                        <div class="member-name">Mahin</div>
+                        <div class="member-role">Camera Expert</div>
+                        <p class="member-bio">Captures all our best moments (and worst decisions).</p>
+                    </div>
+                </div>
+                
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <i class="fas fa-laugh-squint"></i>
+                    </div>
+                    <div class="member-info">
+                        <div class="member-name">Ani</div>
+                        <div class="member-role">Meme Boss</div>
+                        <p class="member-bio">Provides the soundtrack to our chaos with epic memes.</p>
+                    </div>
+                </div>
+                
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="member-info">
+                        <div class="member-name">Sabab</div>
+                        <div class="member-role">Rizz God</div>
+                        <p class="member-bio">Smooth operator with legendary rizz powers.</p>
+                    </div>
+                </div>
+                
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="member-info">
+                        <div class="member-name">Iqra</div>
+                        <div class="member-role">Boss</div>
+                        <p class="member-bio">The ultimate decision maker who keeps everyone in line.</p>
+                    </div>
+                </div>
+                
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <div class="member-info">
+                        <div class="member-name">Nawaf</div>
+                        <div class="member-role">Sigma Boi</div>
+                        <p class="member-bio">The lone wolf who occasionally joins our chaos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="add" class="tab-content">
+            <h2 class="section-title">Add New Content</h2>
+            <div class="add-content">
+                <div class="form-group">
+                    <label for="content-type">Content Type</label>
+                    <select id="content-type">
+                        <option value="photo">Photo/Memory</option>
+                        <option value="event">Event/Outing</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" placeholder="Enter title">
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" placeholder="Enter description"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date">
+                </div>
+                
+                <button class="btn" id="submit-btn">
+                    <i class="fas fa-plus"></i> Add Content
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+        </div>
+        <p class="copyright">© 2023 Delulu Agents. All chaos reserved.</p>
+    </footer>
+
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and content
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Form submission (basic example)
+        document.getElementById('submit-btn').addEventListener('click', () => {
+            const contentType = document.getElementById('content-type').value;
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const date = document.getElementById('date').value;
+            
+            if (title && description && date) {
+                alert(`Thank you! Your ${contentType} has been submitted.`);
+                // In a real application, you would send this data to a server
+                
+                // Reset form
+                document.getElementById('title').value = '';
+                document.getElementById('description').value = '';
+                document.getElementById('date').value = '';
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+
+        // Set minimum date to today for the date picker
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').setAttribute('min', today);
+    </script>
+</body>
+</html>
