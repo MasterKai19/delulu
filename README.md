@@ -1,2 +1,0 @@
-# delulu
-okamma giri kori
